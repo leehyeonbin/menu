@@ -1,4 +1,4 @@
-package dto
+package menu
 
 type Content struct {
 	SeqNo          int        `json:"seqNo"`

@@ -1,4 +1,4 @@
-package dto
+package menu
 
 type Response struct {
 	Result bool `json:"result"`

@@ -1,4 +1,4 @@
-package dto
+package menu
 
 type Data struct {
 	Pagination Pagination `json:"pagination"`

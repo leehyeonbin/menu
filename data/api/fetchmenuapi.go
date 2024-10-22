@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"menu-go/data/dto"
+	"menu-go/data/dto/menu"
 	"net/http"
 )
 
-func FetchMenuAPI(url string) (*dto.Response, error) {
+func FetchMenuAPI(url string) (*menu.Response, error) {
 	httpResponse, error := http.Get(url)
 
 	if error != nil {
@@ -25,7 +25,7 @@ func FetchMenuAPI(url string) (*dto.Response, error) {
 		return nil, fmt.Errorf("error reading body: %v", error)
 	}
 
-	var response dto.Response
+	var response menu.Response
 	if error := json.Unmarshal(body, &response); error != nil {
 		return nil, fmt.Errorf("error unmarshaling JSON: %v", error)
 	}
