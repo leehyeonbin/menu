@@ -2,18 +2,19 @@ package main
 
 import (
 	"log"
-	"os"
 	"menu-go/data/api"
-	"github.com/joho/godotenv"
 	"menu-go/util"
+	"os"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	    // .env 파일 로드
-    err := godotenv.Load()
-    if err != nil {
-        log.Fatal("Error loading .env file")
-    }
+	// .env 파일 로드
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 	slackToken := os.Getenv("SLACK_TOKEN")
 	channelId := os.Getenv("CHANNEL_ID")
 	url := os.Getenv("URL")
@@ -36,5 +37,5 @@ func main() {
 	// 	return
 	// }
 
-	api.SendSlackMessage(slackToken, channelId, src)
+	api.SendSlackMessage(slackToken, channelId, response.Data.Contents[0].Title, "image.jpg")
 }

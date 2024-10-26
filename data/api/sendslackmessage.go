@@ -1,55 +1,43 @@
 package api
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
-	"net/http"
-	"menu-go/data/dto/slack"
+	"os"
+	"time"
+
+	"github.com/slack-go/slack"
 )
 
-func SendSlackMessage(token, channel, imageUrl string) error {
-	url := "https://slack.com/api/chat.postMessage"
+func SendSlackMessage(Token, channel, titile string, imagePath string) error {
+	api := slack.New(Token)
 
-	blocks := []slack.Block {
-		{
-			Type: "image",
-			ImageBlock: &slack.ImageBlock{
-				Type: "image",
-				ImageURL: imageUrl,
-				AltText: "Image",
-			},
-		},
-	}
-
-	payload := slack.SlackMessage{
-		Channel: channel,
-		Blocks: blocks,
-	}
-
-	jsonPayload, err := json.Marshal(payload)
+	file, err := os.Open(imagePath)
 	if err != nil {
-		return fmt.Errorf("marshal: %w", err)
+		fmt.Printf("%s\n", err)
+		return err
+	}
+	defer file.Close()
+
+	// 파일 정보를 얻기 위해 파일 사이즈 계산
+	stat, err := file.Stat()
+	if err != nil {
+		fmt.Printf("Failed to get file info: %v", err)
 	}
 
-	request, error := http.NewRequest("POST", url, bytes.NewBuffer(jsonPayload))
-	if error != nil {
-		return fmt.Errorf("newRequest: %w", error)
+	params := slack.UploadFileV2Parameters{
+		Filename: "menu",
+		Channel:  channel,
+		Title:    titile,
+		FileSize: int(stat.Size()),
+		File:     imagePath,
 	}
 
-	request.Header.Set("Authorization", "Bearer " + token)
-	request.Header.Set("Content-Type", "application/json")
-
-	client := &http.Client{}
-	response, error := client.Do(request)
-	if error != nil {
-		return fmt.Errorf("do: %w", error)
+	FileSummary, err := api.UploadFileV2(params)
+	if err != nil {
+		fmt.Printf("api Error %s\n", err)
+		return err
 	}
-	defer response.Body.Close()
-
-	if response.StatusCode != http.StatusOK {
-		return fmt.Errorf("unexpected status: %d", response.StatusCode)
-	}
-
+	timestamp := time.Now().Format("2006-01-02 15:04:05")
+	fmt.Printf("Image %s successfully sent to channel %s at %s", FileSummary.Title, channel, timestamp)
 	return nil
 }
