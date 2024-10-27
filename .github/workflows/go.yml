@@ -20,7 +20,7 @@ jobs:
       uses: actions/setup-go@v4
       with:
         go-version: '1.23.2'
-
+        
     - name: Create .env file
       run: echo "${{ secrets.DOTENV }}" > .env
 
@@ -29,6 +29,9 @@ jobs:
 
     - name: Test
       run: go test -v ./...
+
+    - name: Update CA certificates
+      run: sudo apt-get update && sudo apt-get install --reinstall -y ca-certificates
 
     - name: Run
       run: go run main.go
