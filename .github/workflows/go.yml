@@ -12,6 +12,8 @@ on:
 jobs:
 
   build:
+    env:
+      GITHUB_ACTIONS_RUNNER_TLS_NO_VERIFY: "1"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
