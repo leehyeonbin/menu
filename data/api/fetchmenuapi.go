@@ -1,6 +1,8 @@
 package api
 
 import (
+	"crypto/tls"
+	"crypto/x509"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -9,8 +11,21 @@ import (
 )
 
 func FetchMenuAPI(url string) (*menu.Response, error) {
-	httpResponse, error := http.Get(url)
+	// 시스템의 루트 인증서 풀 로드
+	rootCAs, _ := x509.SystemCertPool()
+	if rootCAs == nil {
+		rootCAs = x509.NewCertPool()
+	}
 
+	// 사용자 정의 Transport 생성
+	config := &tls.Config{
+		RootCAs: rootCAs,
+	}
+	tr := &http.Transport{TLSClientConfig: config}
+	client := &http.Client{Transport: tr}
+
+	// GET 요청 수행
+	httpResponse, error := client.Get(url)
 	if error != nil {
 		return nil, fmt.Errorf("fetchAPI: %w", error)
 	}
