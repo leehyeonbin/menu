@@ -24,6 +24,9 @@ jobs:
     - name: Create .env file
       run: echo "${{ secrets.DOTENV }}" > .env
 
+    - name: Install certificaticates
+      run: sudo apt-get install -y ca-certificates
+
     - name: Build
       run: go build -v ./...
 
