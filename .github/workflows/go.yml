@@ -1,7 +1,4 @@
-# This workflow will build a golang project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
-
-name: Go
+name: Go CI/CD
 
 on:
   push:
@@ -10,13 +7,14 @@ on:
     branches: [ "main" ]
 
 jobs:
-
-  build:
-    env:
-      GITHUB_ACTIONS_RUNNER_TLS_NO_VERIFY: "1"
+  build-and-run:
     runs-on: ubuntu-latest
+    env:
+      GODEBUG: x509ignoreCN=0
+    
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
     - name: Set up Go
       uses: actions/setup-go@v5
@@ -25,15 +23,17 @@ jobs:
         
     - name: Create .env file
       run: echo "${{ secrets.DOTENV }}" > .env
-
-    - name: Install certificaticates
-      run: sudo apt-get install -y ca-certificates
-
-    - name: Get
-      run: go get .
+      
+    - name: Install dependencies
+      run: |
+        go mod download
+        go mod verify
 
     - name: Build
       run: go build -v ./...
 
-    - name: Run
+    - name: Run tests
+      run: go test -v ./...
+
+    - name: Run application
       run: go run main.go
