@@ -1,0 +1,5 @@
+package slack
+
+func Bot() {
+
+}
