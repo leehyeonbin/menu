@@ -3,6 +3,7 @@ package menu
 import (
 	"fmt"
 	"log"
+	"menu-go/feature/image"
 	"menu-go/feature/menu/data/remote/api"
 	"menu-go/util"
 	"os"
@@ -28,7 +29,7 @@ func Menu() {
 	}
 
 	fmt.Println("download image")
-	imageDownError := util.DownloadImage(src, "image.jpg")
+	imageDownError := image.FetchAndSaveImage(src, "image.jpg")
 	if imageDownError != nil {
 		log.Fatalf("download image error: %v", err)
 		return
