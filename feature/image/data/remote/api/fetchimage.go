@@ -1,13 +1,19 @@
 package api
 
 import (
+	"crypto/tls"
 	"fmt"
 	"io"
 	"net/http"
 )
 
 func FetchImage(url string) (readCloser io.ReadCloser, err error) {
-	resp, err := http.Get(url)
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	resp, err := client.Get(url)
 	if err != nil {
 		return nil, fmt.Errorf("failed to download image: %w", err)
 	}
