@@ -5,11 +5,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"menu-go/data/dto/menu"
+	"menu-go/feature/menu/data/remote/dto"
 	"net/http"
 )
 
-func FetchMenuAPI(url string) (*menu.Response, error) {
+func FetchMenuAPI(url string) (*dto.Response, error) {
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
@@ -30,7 +30,7 @@ func FetchMenuAPI(url string) (*menu.Response, error) {
 		return nil, fmt.Errorf("error reading body: %v", error)
 	}
 
-	var response menu.Response
+	var response dto.Response
 	if error := json.Unmarshal(body, &response); error != nil {
 		return nil, fmt.Errorf("error unmarshaling JSON: %v", error)
 	}

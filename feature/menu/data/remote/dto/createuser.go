@@ -1,4 +1,4 @@
-package menu
+package dto
 
 type CreateUser struct {
 	SequenceNumber         int       `json:"sequenceNumber"`

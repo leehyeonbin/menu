@@ -1,4 +1,4 @@
-package menu
+package dto
 
 type Pagination struct {
 	CurrentElements int  `json:"currentElements"`

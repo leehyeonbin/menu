@@ -34,7 +34,7 @@ func SendSlackMessage(Token, channel, titile string, imagePath string) error {
 
 	FileSummary, err := api.UploadFileV2(params)
 	if err != nil {
-		fmt.Printf("api Error %s\n", err)
+		fmt.Printf("remote Error %s\n", err)
 		return err
 	}
 	timestamp := time.Now().Format("2006-01-02 15:04:05")

@@ -3,6 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/joho/godotenv"
+	"log"
 	"menu-go/feature/menu"
 	"menu-go/feature/slack"
 )
@@ -10,6 +12,11 @@ import (
 func main() {
 	functionPtr := flag.String("function", "default", "function name")
 	flag.Parse()
+
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 
 	switch *functionPtr {
 	case "menu":

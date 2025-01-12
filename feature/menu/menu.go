@@ -2,19 +2,13 @@ package menu
 
 import (
 	"log"
-	"menu-go/data/api"
+	"menu-go/feature/menu/data/remote/api"
 	"menu-go/util"
 	"os"
-
-	"github.com/joho/godotenv"
 )
 
 func Menu() {
 	// .env 파일 로드
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
 	slackToken := os.Getenv("SLACK_TOKEN")
 	channelId := os.Getenv("CHANNEL_ID")
 	url := os.Getenv("URL")
