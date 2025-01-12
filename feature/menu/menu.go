@@ -13,9 +13,9 @@ func Menu() {
 	channelId := os.Getenv("CHANNEL_ID")
 	url := os.Getenv("URL")
 
-	response, error := api.FetchMenuAPI(url)
-	if error != nil {
-		log.Fatalf("fetchAPI: %v", error)
+	response, remoteError := api.FetchMenuAPI(url)
+	if remoteError != nil {
+		log.Fatalf("fetchAPI: %v", remoteError)
 	}
 
 	src, err := util.ExtractSrcFromHTML(response.Data.Contents[0].Contents)
@@ -23,7 +23,15 @@ func Menu() {
 		log.Fatalf("extractSrcFromHTML: %v", err)
 	}
 
-	util.DownloadImage(src, "image.jpg")
+	imageDownError := util.DownloadImage(src, "image.jpg")
+	if imageDownError != nil {
+		log.Fatalf("extractSrcFromHTML: %v", err)
+		return
+	}
 
-	api.SendSlackMessage(slackToken, channelId, response.Data.Contents[0].Title, "image.jpg")
+	sendError := api.SendSlackMessage(slackToken, channelId, response.Data.Contents[0].Title, "image.jpg")
+	if sendError != nil {
+		log.Fatalf("extractSrcFromHTML: %v", err)
+		return
+	}
 }
