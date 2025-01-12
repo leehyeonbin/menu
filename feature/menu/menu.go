@@ -31,14 +31,14 @@ func Menu() {
 	fmt.Println("download image")
 	imageDownError := image.FetchAndSaveImage(src, "image.jpg")
 	if imageDownError != nil {
-		log.Fatalf("download image error: %v", err)
+		log.Fatalf("download image error: %v", imageDownError)
 		return
 	}
 
 	fmt.Println("send slack message")
 	sendError := api.SendSlackMessage(slackToken, channelId, response.Data.Contents[0].Title, "image.jpg")
 	if sendError != nil {
-		log.Fatalf("send slack message error: %v", err)
+		log.Fatalf("send slack message error: %v", sendError)
 		return
 	}
 
