@@ -9,10 +9,12 @@ import (
 
 // DownloadImage 이미지 다운로드 함수
 func DownloadImage(url, filename string) error {
+	fmt.Printf("Downloading %s\n", url)
 	resp, err := http.Get(url)
 	if err != nil {
 		return fmt.Errorf("failed to download image: %w", err)
 	}
+	fmt.Printf("Successfully downloaded %s", resp.Body)
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
 		if err != nil {
