@@ -5,7 +5,7 @@ import (
 	"log"
 	"menu-go/feature/image"
 	"menu-go/feature/menu/data/remote/api"
-	"menu-go/util"
+	"menu-go/shared/util"
 	"os"
 )
 
