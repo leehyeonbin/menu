@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
   schedule:
     # 매주 월요일 03:15 UTC (한국 시간 12:15 KST)
-    - cron: '20 3 * * 1'
+    - cron: '20 2 * * 1'
 
 jobs:
   build-and-run:
